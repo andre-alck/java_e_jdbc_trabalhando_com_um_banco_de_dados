@@ -1,17 +1,16 @@
 import java.sql.Connection;
-import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 public class TestaListagem {
     public static void main(String[] args) throws SQLException {
         ConnectionFactory connectionFactory = new ConnectionFactory();
         Connection connection = connectionFactory.connectToDatabase();
 
-        Statement statement = connection.createStatement();
-        statement.execute("SELECT id, nome, descricao FROM produto;");
-        ResultSet resultSet = statement.getResultSet();
+        PreparedStatement preparedStatement = connection.prepareStatement("SELECT ?, ?, ? FROM produto;");
+        preparedStatement.execute();
+        ResultSet resultSet = preparedStatement.getResultSet();
 
         while (resultSet.next()) {
             Integer id = resultSet.getInt("ID");
