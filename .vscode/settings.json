@@ -3,6 +3,8 @@
     "java.project.outputPath": "bin",
     "java.project.referencedLibraries": [
         "lib/**/*.jar",
-        "mysql-connector-j-8.0.31.jar"
+        "mysql-connector-j-8.0.31.jar",
+        "c3p0-0.9.5.4.jar",
+        "mchange-commons-java-0.2.16.jar"
     ]
 }
