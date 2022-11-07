@@ -2,10 +2,10 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
+import dao.ProdutoDao;
 import modelo.Produto;
-import modelo.ProdutoDao;
 
-public class TestaInsercaoComProduto {
+public class TestaInsercaoEListagemComProduto {
     public static void main(String[] args) throws SQLException {
         Produto comoda = new Produto("CÔMODA", "CÔMODA VERTICAL");
         Produto armario = new Produto("ARMÁRIO", "ARMÁRIO CASAL");
