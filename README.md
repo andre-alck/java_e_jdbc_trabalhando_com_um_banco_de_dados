@@ -18,3 +18,5 @@ x64
 
 NÃO funciona com o driver [disponibilizado pela Alura](https://caelum-online-public.s3.amazonaws.com/1451-jdbc/01/mysql-connector-java-8.0.17.jar).
 Ao invés, extrair [arquivo](https://cdn.mysql.com//Downloads/Connector-J/mysql-connector-j-8.0.31.zip) e adicionar JAR no classpath.
+
+![image](certificado.png)
