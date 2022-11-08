@@ -8,8 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import modelo.Categoria;
+import modelo.Produto;
 
 public class CategoriaDao {
+
     private Connection connection;
 
     public CategoriaDao(Connection connection) {
@@ -18,18 +20,49 @@ public class CategoriaDao {
 
     public List<Categoria> listar() throws SQLException {
         List<Categoria> categorias = new ArrayList<>();
-        String sql = "SELECT * FROM categoria;";
 
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.execute();
+        System.out.println("Executando a query de listar categoria");
 
-            try (ResultSet resultSet = preparedStatement.getResultSet()) {
-                while (resultSet.next()) {
-                    categorias.add(new Categoria(resultSet.getInt(1), resultSet.getString(2)));
+        String sql = "SELECT ID, NOME FROM CATEGORIA";
+
+        try (PreparedStatement pstm = connection.prepareStatement(sql)) {
+            pstm.execute();
+
+            try (ResultSet rst = pstm.getResultSet()) {
+                while (rst.next()) {
+                    Categoria categoria = new Categoria(rst.getInt(1), rst.getString(2));
+
+                    categorias.add(categoria);
                 }
             }
         }
-
         return categorias;
+    }
+
+    public List<Categoria> listarComProduto() throws SQLException {
+        Categoria ultima = null;
+        List<Categoria> categorias = new ArrayList<>();
+
+        System.out.println("Executando a query de listar categoria");
+
+        String sql = "SELECT C.ID, C.NOME, P.ID, P.NOME, P.DESCRICAO FROM CATEGORIA C INNER JOIN PRODUTO P ON C.ID = P.CATEGORIA_ID";
+
+        try (PreparedStatement pstm = connection.prepareStatement(sql)) {
+            pstm.execute();
+
+            try (ResultSet rst = pstm.getResultSet()) {
+                while (rst.next()) {
+                    if (ultima == null || !ultima.getNome().equals(rst.getString(2))) {
+                        Categoria categoria = new Categoria(rst.getInt(1), rst.getString(2));
+
+                        categorias.add(categoria);
+                        ultima = categoria;
+                    }
+                    Produto produto = new Produto(rst.getInt(3), rst.getString(4), rst.getString(5));
+                    ultima.adicionar(produto);
+                }
+            }
+            return categorias;
+        }
     }
 }

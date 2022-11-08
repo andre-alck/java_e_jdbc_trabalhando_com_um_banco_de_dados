@@ -3,6 +3,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import dao.ProdutoDao;
+import factory.ConnectionFactory;
 import modelo.Produto;
 
 public class TestaInsercaoEListagemComProduto {
