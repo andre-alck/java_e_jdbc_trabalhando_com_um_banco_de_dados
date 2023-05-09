@@ -1,17 +1,17 @@
-package br.com.alura.bytebank.domain.conta;
+package br.com.alura.bytebank.domain.conta.model;
 
 import br.com.alura.bytebank.domain.cliente.Cliente;
 
 import java.math.BigDecimal;
 import java.util.Objects;
 
-public class Conta {
+public class ContaModel {
 
     private Integer numero;
     private BigDecimal saldo;
     private Cliente titular;
 
-    public Conta(Integer numero, Cliente titular) {
+    public ContaModel(Integer numero, Cliente titular) {
         this.numero = numero;
         this.titular = titular;
         this.saldo = BigDecimal.ZERO;
@@ -33,8 +33,8 @@ public class Conta {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Conta conta = (Conta) o;
-        return numero.equals(conta.numero);
+        ContaModel contaModel = (ContaModel) o;
+        return numero.equals(contaModel.numero);
     }
 
     @Override
