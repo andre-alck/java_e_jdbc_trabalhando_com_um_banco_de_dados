@@ -22,7 +22,7 @@ public class ContaDao {
 
     public void abrir(DadosAberturaContaModel dadosDaConta) {
         var cliente = new Cliente(dadosDaConta.dadosCliente());
-        var conta = new ContaModel(dadosDaConta.numero(), cliente);
+        var conta = new ContaModel(dadosDaConta.numero(), BigDecimal.ZERO, cliente, true);
 
         String sql = "insert into conta (numero, saldo, cliente_nome, cliente_cpf, cliente_email) values (?, ?, ?, ?, ?)";
 
@@ -54,15 +54,19 @@ public class ContaDao {
             ResultSet resultSet = preparedStatement.executeQuery(sql);
 
             while(resultSet.next()) {
-                int numero = resultSet.getInt("numero");
-                String nome = resultSet.getString("cliente_nome");
-                String cpf = resultSet.getString("cliente_cpf");
-                String email = resultSet.getString("cliente_email");
-                DadosCadastroCliente dadosCadastroCliente = new DadosCadastroCliente(nome, cpf, email);
-                Cliente cliente = new Cliente(dadosCadastroCliente);
+                Boolean estaAtiva = resultSet.getBoolean("esta_ativa");
+                if(estaAtiva) {
+                    int numero = resultSet.getInt("numero");
+                    String nome = resultSet.getString("cliente_nome");
+                    String cpf = resultSet.getString("cliente_cpf");
+                    String email = resultSet.getString("cliente_email");
+                    BigDecimal saldo = resultSet.getBigDecimal("saldo");
+                    DadosCadastroCliente dadosCadastroCliente = new DadosCadastroCliente(nome, cpf, email);
+                    Cliente cliente = new Cliente(dadosCadastroCliente);
 
-                ContaModel novaConta = new ContaModel(numero, cliente);
-                contas.add(novaConta);
+                    ContaModel novaConta = new ContaModel(numero, saldo, cliente, true);
+                    contas.add(novaConta);
+                }
             }
 
             resultSet.close();
@@ -104,14 +108,15 @@ public class ContaDao {
             ResultSet resultSet = preparedStatement.executeQuery();
             if(resultSet.next()) {
                 int n = resultSet.getInt("numero");
-                float saldo = resultSet.getFloat("saldo");
+                BigDecimal saldo = resultSet.getBigDecimal("saldo");
                 String clienteNome = resultSet.getString("cliente_nome");
                 String clienteCpf = resultSet.getString("cliente_cpf");
                 String clienteEmail = resultSet.getString("cliente_email");
+                Boolean estaAtiva = resultSet.getBoolean("esta_ativa");
                 DadosCadastroCliente dadosCadastroCliente = new DadosCadastroCliente(clienteNome, clienteCpf, clienteEmail);
                 Cliente cliente = new Cliente(dadosCadastroCliente);
 
-                contaModel = new ContaModel(numero, cliente);
+                contaModel = new ContaModel(numero, saldo, cliente, estaAtiva);
             }
 
             resultSet.close();
